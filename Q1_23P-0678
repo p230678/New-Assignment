@@ -1,0 +1,62 @@
+#include <stdio.h>
+
+int main() {
+    int grid[20][20]; // 2D array to represent the grid
+    int maxProduct = 0; // maximum product found
+    int direction = -1; // Initialize direction variable
+
+    // read the grid from input 
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; j < 20; j++) {
+            scanf("%d", &grid[i][j]);
+        }
+    }
+
+    // traverse the grid and calculate products in all possible directions
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; j < 20; j++) {
+            // horizontal product
+            if (j + 3 < 20) {
+                int horizontal_product = grid[i][j] * grid[i][j + 1] * grid[i][j + 2] * grid[i][j + 3];
+                if (horizontal_product > maxProduct) {
+                    maxProduct = horizontal_product;
+                    direction = 0; // horizontal
+                }
+            }
+
+            // vertical product
+            if (i + 3 < 20) {
+                int vertical_product = grid[i][j] * grid[i + 1][j] * grid[i + 2][j] * grid[i + 3][j];
+                if (vertical_product > maxProduct) {
+                    maxProduct = vertical_product;
+                    direction = 1; // vertical
+                }
+            }
+
+            // Diagonal product (top-left to bottom-right)
+            if (i + 3 < 20 && j + 3 < 20) {
+                int diagonal_product = grid[i][j] * grid[i + 1][j + 1] * grid[i + 2][j + 2] * grid[i + 3][j + 3];
+                if (diagonal_product > maxProduct) {
+                    maxProduct = diagonal_product;
+                    direction = 2; // diagonal
+                }
+            }
+        }
+    }
+
+    // print the maximum product and direction
+    printf("Maximum Product: %d\n", maxProduct);
+    if (direction == 0) {
+        printf("Direction: Horizontal\n");
+    }
+    else if (direction == 1) {
+        printf("Direction: Vertical\n");
+    }
+    else if (direction == 2) {
+        printf("Direction: Diagonal\n");
+    }
+    else {
+        printf("No valid direction found\n");
+    }
+    return 0;
+}
