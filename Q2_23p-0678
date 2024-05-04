@@ -1,0 +1,34 @@
+#include <stdio.h>
+//Calculate the length of Collatz sequence for a given starting number
+int collatz_seq_length(long long n){
+    int length  = 1;
+    while (n != 1){
+        if (n % 2 == 0){
+            n /=2;
+        }
+        else n = 3 * n + 1;
+        length++;
+
+        }
+        return length;
+    }
+    // Function to the starting number under N with the longest Collatz sequence 
+    void find_longest_collatz_sequence(long long N){
+        long long max_starting_Number = 1;
+        int maxlength = 0;
+        for (long long i = 1; i < N; i++){
+            int length =  collatz_seq_length(i);
+            if (length > maxlength){
+                maxlength  = length;
+                max_starting_Number = i;
+            }
+        }
+        printf("The starting number under %lld with the longest collatz sequence is %lld\n",N,max_starting_Number);
+    }
+int main(){
+    long long N;
+    printf("Enter the upper limit N:");
+    scanf("%lld",&N);
+    find_longest_collatz_sequence(N);
+    return 0;
+}
