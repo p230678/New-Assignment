@@ -1,3 +1,11 @@
+//RASHID AMIN
+//23P-0678
+//BS(CS)-2A
+//STUDENT INFORMATION SYSTEM
+//CODER : RASHID AMIN
+//PURPOSE : STORE STUDENT INFORMATION
+//          DISPLAY STUDENT INFORMATION
+//          SEARCH DIFFERENT STUDENT INFORMATION 
 #include <stdio.h>
 // Function prototypes
 void addStudent();
@@ -219,8 +227,8 @@ void calculateGrade(float pf_marks, float calculus_marks, float physics_marks) {
         printf("\n\t\t\tGrade for PF\t\t     C\n");
     } else if (pf_marks >= 58.0) {
         printf("\n\t\t\tGrade for PF:\t\t    C-\n");
-    } else if (pf_marks >= 54.0) {
-        printf("\n\t\t\tGrade for PF\t\t     D+\n");
+    } else if (pf_marks >= 54.0) {   
+         printf("\n\t\t\tGrade for PF\t\t     D+\n");
     } else if (pf_marks >= 50.0) {
         printf("\n\t\t\tGrade for PF\t\t     D\n");
     } else {
