@@ -1,0 +1,282 @@
+#include <stdio.h>
+// Function prototypes
+void addStudent();
+void viewStudentRecords();
+void searchStudent();
+void calculateGrade(float pf_marks, float calculus_marks, float physics_marks);
+
+int main() {
+    int choice = 0;
+
+    do {
+        // Display Menu
+        printf("\n\n\n\t\t\t\t************* Student Information System **************\n\n\n\n");
+        printf("\t\t\t1. Add Student Information\n\n");
+        printf("\t\t\t2. View Student Information\n\n");
+        printf("\t\t\t3. Search Student\n\n");
+        printf("\t\t\t4. Exit \n\n");
+        // Get user input
+        printf("\t\t\tChoose between options (1-4)\t\t");
+        scanf("%d", &choice);
+        printf("\n\t------------------------------------------------------------------------------\n\n");
+
+        // Check for valid input and newline characters
+        if (choice < 1 || choice > 5) {
+            // Invalid input
+            printf("\t\t\tInvalid Input! Enter a number between 1 and 4 only.\n");
+            // Clear any remaining characters in the input buffer
+            while (getchar() != '\n');
+        } else {
+            // Valid input, break out of the loop
+            switch (choice) {
+                case 1:
+                    addStudent();
+                    break;
+
+                case 2:
+                    viewStudentRecords();
+                    break;
+
+                case 3:
+                    searchStudent();
+                    break;
+
+                
+                case 4:
+                    printf("\t\t\tExiting the program..............\n\n\n");
+                    break;
+
+                default:
+                    // for handling an invalid choice
+                    printf("\t\t\tInvalid choice. Please enter a valid option.\n");
+            }
+        }
+
+    } while (choice != 5);
+
+    return 0;
+}
+
+// Function to add student information
+void addStudent() {
+    char studentName[100];
+    char lastName[100];
+    int studentID, studentBatch;
+    long long int contactNumber;
+    float pf_marks, calculus_marks, physics_marks;
+    char userChoice;
+
+    do {
+        // Add Student Information
+        printf("\n\n\n\t\t\t\t************* Add Student Information *************\n\n\n\n");
+
+        printf("\t\t\tEnter Student Name\t");
+        scanf("%s", studentName);
+        printf("\t\t\tEnter Student Last Name\t");
+        scanf("%s", lastName);
+        printf("\t\t\tEnter Batch\t\t");
+        scanf("%d", &studentBatch);
+        printf("\t\t\tEnter Student ID\t");
+        scanf("%d", &studentID);
+        printf("\t\t\tEnter 11-digit Contact Number: ");
+        scanf("%011lld", &contactNumber);
+        printf("\t\t\tEnter marks for Programming Fundamentals\t");
+        scanf("%f", &pf_marks);
+        if(pf_marks>100 || pf_marks<0){
+            printf("\t\t\tMarks can only be between 0 to 100\t\t");
+            while(pf_marks>100 || pf_marks<0){
+                printf("\n\t\t\tPlease enter marks again:\t\t");
+                scanf("%f",&pf_marks);
+            }
+        }
+        printf("\t\t\tEnter marks for Calculus:\t");
+        scanf("%f", &calculus_marks);
+        if(calculus_marks>100 || calculus_marks<0){
+            printf("\t\t\tMarks can only be between 0 to 100\t\t");
+            while(calculus_marks>100 || calculus_marks<0){
+                printf("\n\t\t\tPlease enter marks again:\t\t");
+                scanf("%f",&calculus_marks);
+            }
+        }
+        printf("\t\t\tEnter marks of Physics:\t");
+        scanf("%f", &physics_marks);
+        if(physics_marks>100 || physics_marks<0){
+            printf("\t\t\tMarks can only be between 0 to 100\n");
+            while(physics_marks>100 || physics_marks<0){
+                printf("\n\t\t\tPlease enter marks again:\t\t");
+                scanf("%f",&physics_marks);
+            }
+        }
+        printf("\n\t------------------------------------------------------------------------------\n\n");
+        printf("\t\t\tRecord Stored Successfully\n");
+
+        printf("\t\t\tDo You want to add another student (y/n)\t");
+        scanf(" %c", &userChoice);
+    } while (userChoice == 'y' || userChoice == 'Y');
+}
+// Function to display student records
+void viewStudentRecords() {
+    char studentName[100];
+    char lastName[100];
+    int studentID, studentBatch;
+    long long int contactNumber;
+    float pf_marks, calculus_marks, physics_marks;
+
+    // Display Student Records
+    printf("\n\n\t\t\t\t************* Students Record *************\n\n\n");
+
+    // Open StudentInfo.txt file for reading
+    FILE *studentInfoFile = fopen("StudentInfo.txt", "r");
+
+    if (studentInfoFile == NULL) {
+        printf("\t\tFile open failed\n");
+        return;
+    } else {
+        printf("\n\t----------------------------------------------------------------------------\n\n");
+    }
+
+    // Read and display student information from the file
+    while (fscanf(studentInfoFile, "%s %s %d %lld %d %f %f %f", studentName, lastName, &studentID, &contactNumber, &studentBatch, &pf_marks, &calculus_marks, &physics_marks) != EOF) {
+        printf("\n\t\t\tStudent Name:           %s\n", studentName);
+        printf("\n\t\t\tEnter Last Name         %s\n", lastName);
+        printf("\n\t\t\tStudent Batch:           %d\n", studentBatch);
+        printf("\n\t\t\tStudent ID:              %d\n", studentID);
+        printf("\n\t\t\tStudent Contact Number:  %011lld\n", contactNumber);
+        printf("\n\t\t\tProgramming Marks:     %.2f\n", pf_marks);
+        printf("\n\t\t\tCalculus Marks:          %.2f\n", calculus_marks);
+        printf("\n\t\t\tPhysics Marks:           %.2f\n", physics_marks);
+        // calculateGrade(pf_marks, calculus_marks, physics_marks);
+        printf("\n");
+        printf("\n\t----------------------------------------------------------------------------\n\n");
+    }
+
+    // Close the file
+    fclose(studentInfoFile);
+}
+
+void searchStudent() {
+    char studentName[100];
+    char lastName[100];
+    int enteredID;
+    int studentID, studentBatch;
+    long long int contactNumber;
+    float pf_marks, calculus_marks, physics_marks;
+    int found = 0;
+
+    printf("\n\n\n\t\t\t\t\t************* Search Student *************\n\n\n\n");
+    printf("\n\t\t\tEnter Student ID:\t");
+    scanf("%d", &enteredID);
+
+    // Open StudentInfo.txt file for reading
+    FILE *studentInfoFile = fopen("StudentInfo.txt", "r");
+
+    // Search for a student by ID and display the information
+    while (fscanf(studentInfoFile, "%s %s %d %lld %d %f %f %f", studentName, lastName, &studentID, &contactNumber, &studentBatch, &pf_marks, &calculus_marks, &physics_marks) != EOF) {
+        if (enteredID == studentID) {
+            found = 1;
+            printf("\n\t\t\tStudent Name:        %s\n", studentName);
+            printf("\n\t\t\tEnter Last Name     %s\n", lastName);
+            printf("\n\t\t\tStudent Batch:        %d\n", studentBatch);
+            printf("\n\t\t\tStudent ID:           %d\n", studentID);
+            printf("\n\t\t\tContact Number:      %011lld\n", contactNumber);
+            printf("\n\t\t\tProgramming  Marks:  %.2f\n", pf_marks);
+            printf("\n\t\t\tCalculus Marks:       %.2f\n", calculus_marks);
+            printf("\n\t\t\tPhysics Marks:        %.2f\n", physics_marks);
+            // calculateGrade(pf_marks, calculus_marks, physics_marks);
+            printf("\n");
+            printf("\n\t----------------------------------------------------------------------------\n\n");
+        }
+    }
+
+    // Display a message if the student is not found
+    if (!found) {
+        printf("\t\t\tRecord Not found\n");
+    }
+
+    // Close the file
+    fclose(studentInfoFile);
+}
+
+// Function to calculate grade based on marks
+void calculateGrade(float pf_marks, float calculus_marks, float physics_marks) {
+    // Determine the grade based on the marks
+   
+      if (pf_marks >= 90.0 && pf_marks<=100.0) {
+        printf("\n\t\t\tGrade for PF\t\t      A+\n");
+    } else if (pf_marks >= 86.0) {
+        printf("\n\t\t\tGrade for PF\t\t      A\n");
+    } else if (pf_marks >= 82.0) {
+        printf("\n\t\t\tGrade for PF\t\t      A-\n");
+    } else if (pf_marks >= 78.0) {
+        printf("\n\t\t\tGrade for PF\t\t      B+\n");
+    } else if (pf_marks >= 74.0) {
+        printf("\n\t\t\tGrade for PF\t\t      B\n");
+    } else if (pf_marks >= 70.0) {
+        printf("\n\t\t\tGrade for PF\t\t      B-\n");
+    } else if (pf_marks >= 66.0) {
+        printf("\n\t\t\tGrade for PF\t\t     C+\n");
+    } else if (pf_marks >= 62.0) {
+        printf("\n\t\t\tGrade for PF\t\t     C\n");
+    } else if (pf_marks >= 58.0) {
+        printf("\n\t\t\tGrade for PF:\t\t    C-\n");
+    } else if (pf_marks >= 54.0) {
+        printf("\n\t\t\tGrade for PF\t\t     D+\n");
+    } else if (pf_marks >= 50.0) {
+        printf("\n\t\t\tGrade for PF\t\t     D\n");
+    } else {
+        printf("\n\t\t\tGrade for PF\t\t     F\n");
+    }
+
+    if (calculus_marks >= 90.0 && calculus_marks<=100.0) {
+        printf("\n\t\t\tGrade for Calculus:\t\tA+\n");
+    } else if (calculus_marks >= 86.0) {
+        printf("\n\t\t\tGrade for Calculus:\t\tA\n");
+    } else if (calculus_marks >= 82.0) {
+        printf("\n\t\t\tGrade for Calculus:\t\tA-\n");
+    } else if (calculus_marks >= 78.0) {
+        printf("\n\t\t\tGrade for Calculus:\t\tB+\n");
+    } else if (calculus_marks >= 74.0) {
+        printf("\n\t\t\tGrade for Calculus:\t\tB\n");
+    } else if (calculus_marks >= 70.0) {
+        printf("\n\t\t\tGrade for Calculus:\t\tB-\n");
+    } else if (calculus_marks >= 66.0) {
+        printf("\n\t\t\tGrade for Calculus:\t\tC+\n");
+    } else if (calculus_marks >= 62.0) {
+        printf("\n\t\t\tGrade for Calculus:\t\tC\n");
+    } else if (calculus_marks >= 58.0) {
+        printf("\n\t\t\tGrade for Calculus:\t\tC-\n");
+    } else if (calculus_marks >= 54.0) {
+        printf("\n\t\t\tGrade for Calculus:\t\tD+\n");
+    } else if (calculus_marks >= 50.0) {
+        printf("\n\t\t\tGrade for Calculus:\t\tD\n");
+    } else {
+        printf("\n\t\t\tGrade for Calculus:\t\tF\n");
+    }
+
+    if (physics_marks >= 90.0 && physics_marks<=100.0) {
+        printf("\n\t\t\tGrade for Physics:\t\tA+\n");
+    } else if (physics_marks >= 86.0) {
+        printf("\n\t\t\tGrade for Physics:\t\tA\n");
+    } else if (physics_marks >= 82.0) {
+        printf("\n\t\t\tGrade for Physics:\t\tA-\n");
+    } else if (physics_marks >= 78.0) {
+        printf("\n\t\t\tGrade for Physics:\t\tB+\n");
+    } else if (physics_marks >= 74.0) {
+        printf("\n\t\t\tGrade for Physics:\t\tB\n");
+    } else if (physics_marks >= 70.0) {
+        printf("\n\t\t\tGrade for Physics:\t\tB-\n");
+    } else if (physics_marks >= 66.0) {
+        printf("\n\t\t\tGrade for Physics:\t\tC+\n");
+    } else if (physics_marks >= 62.0) {
+        printf("\n\t\t\tGrade for Physics:\t\tC\n");
+    } else if (physics_marks >= 58.0) {
+        printf("\n\t\t\tGrade for Physics:\t\tC-\n");
+    } else if (physics_marks >= 54.0) {
+        printf("\n\t\t\tGrade for Physics:\t\tD+\n");
+    } else if (physics_marks >= 50.0) {
+        printf("\n\t\t\tGrade for Physics:\t\tD\n");
+    } 
+     else {
+                 printf("\n\t\t\tGrade:\t\t\t F\n");
+    }
+}
